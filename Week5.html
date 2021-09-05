@@ -1,0 +1,114 @@
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>Week 5</title>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script> 
+</head>
+<body>
+<div id="app">
+	<p v-bind:title="message">{{message}}</p>
+	<ol>
+		<li v-for="sth in todos"		
+		>{{sth.text}}</li>
+	</ol>
+	<ol>
+		<to-do
+			v-for="sth in todos"
+			v-bind:todo ="sth.text"
+		></to-do>
+	</ol>
+	<p><button v-on:click="increase">increase</button>{{count}}</p>
+	<p><counter
+		v-for="sth in todos"
+		v-bind:info="sth.text"
+	></counter>		
+	</p>
+	<div v-bind:style="{ fontSize: postFontSize + 'em' }">
+		<blog-post
+			v-for="post in posts"
+			v-bind:post= "post"
+			v-on:enlarge-text = "postFontSize += 0.1"
+		></blog-post>
+	
+	</div>
+
+	</div>
+	<div id="app-6">
+	<p>{{ message }}</p>
+	<input v-model="message">
+	</div>
+	
+	<div id="app-5">
+	<p>{{ message }}</p>
+	<button v-on:click="reverseMessage">Reverse Message</button>
+	</div>
+
+<script>
+Vue.component("blog-post",{
+	props:["post"],
+	template: '<div><h1>{{post.title}}</h1><h6>{{post.id}}</h6><button v-on:click="$emit(\'enlarge-text\')">Enlarge Text</button></div>',
+})
+
+Vue.component("to-do",{
+	props:["todo"],
+	template: "<li>{{todo}}</li>",
+
+})
+
+Vue.component("counter",{
+	props:["info"],
+	template: "<button v-on:click='counter ++;pointer --'>{{counter}} {{info}} {{pointer}}</button>",
+	data: function(){
+		return {
+			counter: 0,
+			pointer: 0,
+		}	
+	}
+
+})
+
+var app = new Vue({
+	el:"#app",
+	data: {
+		message: "this is a test",
+		todos:[
+			{key:1, text:"item 1"},
+			{key:2, text:"item 2"},
+			{key:3, text:"item 3"},
+		],
+		count:0,
+		posts: [
+		  { id: 1, title: 'My journey with Vue' },
+		  { id: 2, title: 'Blogging with Vue' },
+		  { id: 3, title: 'Why Vue is so fun' }
+		],
+		postFontSize:1,
+	},
+	methods: {
+		increase: function() {
+			this.count= this.count +1;
+		},	
+	}
+})
+var app6 = new Vue({
+  el: '#app-6',
+  data: {
+    message: 'Hello Vue!'
+  }
+})
+var app5 = new Vue({
+  el: '#app-5',
+  data: {
+    message: 'Hello Vue.js!'
+  },
+  methods: {
+    reverseMessage: function () {
+      this.message = this.message.split('').reverse().join('')
+    }
+  }
+})
+
+</script>
+
+</body>
+</html>
